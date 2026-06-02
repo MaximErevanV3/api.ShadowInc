@@ -69,10 +69,19 @@
 
         .btn-stack { margin-top: 25px !important; display: flex !important; flex-direction: column !important; gap: 10px !important; }
         .btn-action { display: flex !important; justify-content: center; align-items: center; padding: 12px; font-size: 13px; font-weight: 600; text-decoration: none; border-radius: 10px; box-sizing: border-box; transition: all 0.2s ease; }
-        .btn-white { background: #ffffff !important; color: #030307 !important; border: none; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1); }
-        .btn-white:hover { background: #e4e4e7 !important; transform: translateY(-1px); }
-        .btn-outline { background: rgba(34, 197, 94, 0.02) !important; color: #4ade80 !important; border: 1px solid rgba(34, 197, 94, 0.3) !important; }
-        .btn-outline:hover { background: rgba(34, 197, 94, 0.08) !important; border-color: #4ade80 !important; transform: translateY(-1px); }
+                .btn-white { background: #ffffff; color: #030307; border: none; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05); }
+        .btn-white:hover { background: #e4e4e7; transform: translateY(-1px); box-shadow: 0 0 25px rgba(255, 255, 255, 0.25); }
+        
+        .btn-outline { background: rgba(34, 197, 94, 0.02); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2); }
+        .btn-outline:hover { background: rgba(34, 197, 94, 0.06); border-color: #4ade80; transform: translateY(-1px); box-shadow: 0 0 25px rgba(34, 197, 94, 0.25); }
+        
+        /* Специфический стиль подсветки для третьей голубой кнопки */
+        .btn-stack a:nth-child(3):hover {
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.25) !important;
+            border-color: #38bdf8 !important;
+            background: rgba(56, 189, 248, 0.06) !important;
+        }
+
         
         .social-row { display: flex !important; justify-content: center !important; margin-top: 20px !important; padding-top: 12px !important; border-top: 1px solid rgba(255, 255, 255, 0.03) !important; }
         .social-link { font-size: 11px; font-weight: 600; color: #71717a; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s ease; }
@@ -161,7 +170,7 @@
         // ГЛОБАЛЬНЫЙ БЛОК КОНФИГУРАЦИИ КЛАСТЕРА
         // true — включить аварию НА ВСЕХ СТРАНИЦАХ / false — вернуть норму
         // ==========================================
-        const INFRASTRUCTURE_OVERLOAD = true; 
+        const INFRASTRUCTURE_OVERLOAD = false; 
         // ==========================================
 
         function initClusterStatus() {
