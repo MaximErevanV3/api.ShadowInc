@@ -114,4 +114,27 @@
                 Следить в X (Twitter)
             </a>
         </div>
-© 2026 ShadowsLTD Project. Лицензия MIT.function showBuildAlert() {const alertBox = document.getElementById('build-alert');alertBox.style.display = 'block';setTimeout(() => { alertBox.style.display = 'none'; }, 5000);}function switchOS(os) {document.getElementById('os-win').classList.remove('active');document.getElementById('os-linux').classList.remove('active');if(os === 'win') { document.getElementById('os-win').classList.add('active'); }else { document.getElementById('os-linux').classList.add('active'); }}{content: }
+        <div class="social-row">
+            <a href="#" class="social-link">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-bottom:-1px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                Следить в X (Twitter)
+            </a>
+        </div>
+        <div class="footer">&copy; 2026 ShadowsLTD Project. Лицензия MIT.</div>
+    </div>
+
+    <script>
+        function showBuildAlert() {
+            const alertBox = document.getElementById('build-alert');
+            alertBox.style.display = 'block';
+            setTimeout(() => { alertBox.style.display = 'none'; }, 5000);
+        }
+        function switchOS(os) {
+            document.getElementById('os-win').classList.remove('active');
+            document.getElementById('os-linux').classList.remove('active');
+            if(os === 'win') { document.getElementById('os-win').classList.add('active'); }
+            else { document.getElementById('os-linux').classList.add('active'); }
+        }
+    </script>
+</body>
+</html>
