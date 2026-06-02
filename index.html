@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowsInc API — Официальная техническая платформа</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #050508;
+            background-image: 
+                radial-gradient(at 50% 0%, rgba(34, 197, 94, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(24, 24, 37, 0.6) 0px, transparent 50%);
+            color: #f4f4f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .main-card {
+            background: rgba(10, 10, 14, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 520px;
+            width: 100%;
+            margin: 20px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 24px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pulse-dot::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 50%;
+            background-color: #22c55e;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3.5); opacity: 0; }
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin: 0 0 12px 0;
+            background: linear-gradient(135deg, #ffffff 40%, #a5a5b2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #8a8993;
+            line-height: 1.6;
+            margin: 0 0 25px 0;
+        }
+
+        .metrics-bar {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .metric-item {
+            text-align: left;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: #52525b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2px;
+        }
+
+        .ping-window {
+            height: 16px;
+            overflow: hidden;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: monospace;
+        }
+
+        .ping-ticker {
+            display: flex;
+            flex-direction: column;
+            animation: tickPing 15s steps(1) infinite;
+        }
+
+        .ping-ticker span {
+            height: 16px;
+            line-height: 16px;
+            color: #e4e4e7;
+        }
+
+        @keyframes tickPing {
+            0%, 100% { transform: translateY(0); }
+            16.6% { transform: translateY(-16px); }
+            33.3% { transform: translateY(-32px); }
+            50%   { transform: translateY(-48px); }
+            66.6% { transform: translateY(-64px); }
+            83.3% { transform: translateY(-80px); }
+        }
+
+        .tech-info-block {
+            text-align: left;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .tech-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #52525b;
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+        }
+
+        .tech-text {
+            font-size: 13px;
+            color: #6e6d7a;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .tech-dump {
+            background: #010103;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 11px;
+            color: #4b5263;
+            line-height: 1.4;
+            overflow-x: auto;
+        }
+
+        .footer {
+            font-size: 11px;
+            color: #44434b;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-card">
+        <!-- Кнопка статуса с новым текстом -->
+        <div class="badge">
+            <span class="pulse-dot"></span>
+            СИСТЕМЫ ОНЛАЙН // OPERATIONAL
+        </div>
+
+        <h1>ShadowsInc API</h1>
+        <p class="subtitle">Система изолированной маршрутизации данных. Доступ к конечным точкам ограничен протоколами сквозного шифрования.</p>
+
+        <div class="metrics-bar">
+            <div class="metric-item">
+                <div class="metric-label">Node latency</div>
+                <div class="ping-window">
+                    <div class="ping-ticker">
+                        <span>14 ms</span>
+                        <span>12 ms</span>
+                        <span>16 ms</span>
+                        <span>11 ms</span>
+                        <span>15 ms</span>
+                        <span>13 ms</span>
+                    </div>
+                </div>
+            </div>
+            <div class="metric-item" style="text-align: right;">
+                <div class="metric-label">Uptime cluster</div>
+                <div class="metric-value" style="color: #4ade80;">99.98%</div>
+            </div>
+        </div>
+
+        <div class="tech-info-block">
+            <div class="tech-title">System Specifications</div>
+            <div class="tech-text">
+                Архитектура ядра распределяет входящие запросы в соответствии с динамическими алгоритмами балансировки нагрузок Tier-4. Любые несанкционированные попытки сканирования портов или десериализации объектов логируются локальными демонами и автоматически перенаправляются в черные списки подсетей.
+            </div>
+            <div class="tech-text" style="font-style: italic;">
+                Notice: Public entrypoints are deprecated. Use private VPC peering to communicate with the edge server architecture.
+            </div>
+            
+            <div class="tech-title" style="margin-top: 20px;">Cluster Diagnostics</div>
+            <div class="tech-dump">
+                CORE::INIT -> [OK]<br>
+                SECURE_TUNNEL -> TLS_AES_256_GCM_SHA384 active<br>
+                LOAD_BALANCER -> Weighted Round-Robin synced<br>
+                DB_PROXY -> Replica-Set cluster connected (0.003s)<br>
+                POLICY -> Block non-whitelisted IP handshakes
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 ShadowsInc Nodes. Все права защищены.
+        </div>
+    </div>
+
+</body>
+</html>
