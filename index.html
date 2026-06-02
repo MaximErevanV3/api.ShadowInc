@@ -156,18 +156,21 @@
     </div>
 
     <script>
-        // ==========================================
+                // ==========================================
         // ГЛОБАЛЬНЫЙ БЛОК КОНФИГУРАЦИИ КЛАСТЕРА
-        // true — включить аварию / false — вернуть норму
+        // true — включить аварию НА ВСЕХ СТРАНИЦАХ / false — вернуть норму
         // ==========================================
-        const INFRASTRUCTURE_OVERLOAD = false; 
+        const INFRASTRUCTURE_OVERLOAD = true; 
         // ==========================================
 
-              function initClusterStatus() {
+        function initClusterStatus() {
             const alertTop = document.getElementById('cluster-alert');
             const badge = document.getElementById('system-status-badge');
             const dot = document.getElementById('status-dot');
             const txt = document.getElementById('status-text');
+
+            // Синхронизация: Записываем состояние в память браузера для остальных страниц
+            localStorage.setItem('cluster_overload_state', INFRASTRUCTURE_OVERLOAD ? 'true' : 'false');
 
             if (INFRASTRUCTURE_OVERLOAD) {
                 alertTop.style.display = 'block';
@@ -176,7 +179,7 @@
                 badge.style.borderColor = 'rgba(239, 68, 68, 0.2)';
                 badge.style.color = '#f87171';
                 
-                // Исправление цвета точки и её пульсации на красный
+                // Фикс красной точки и её пульсации
                 dot.style.backgroundColor = '#ef4444';
                 dot.style.setProperty('--pulse-color', '#ef4444'); 
                 
@@ -188,14 +191,13 @@
                 badge.style.borderColor = 'rgba(34, 197, 94, 0.15)';
                 badge.style.color = '#4ade80';
                 
-                // Возврат точки в зеленый режим
+                // Возврат в зеленый режим
                 dot.style.backgroundColor = '#22c55e';
                 dot.style.setProperty('--pulse-color', '#22c55e');
                 
                 txt.innerText = 'ONLINE';
             }
         }
-
 
         initClusterStatus();
 
@@ -222,4 +224,5 @@
     </script>
 </body>
 </html>
+
 
