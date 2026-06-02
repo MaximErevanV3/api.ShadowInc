@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShadowsLTD API — Официальная техническая платформа</title>
+    <title>ShadowsLTD — Открытая техническая платформа</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -33,6 +33,7 @@
             font-size: 32px; font-weight: 700; letter-spacing: -0.03em; margin: 0 0 12px 0; background: linear-gradient(135deg, #ffffff 40%, #a5a5b2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .subtitle { font-size: 15px; color: #8a8993; line-height: 1.6; margin: 0 0 25px 0; }
+        
         .metrics-bar {
             background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 12px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;
         }
@@ -57,18 +58,28 @@
             50%   { transform: translateY(-32px); }
             75%   { transform: translateY(-48px); }
         }
+        
+        /* Блок загрузки ядра на главной */
+        .download-box {
+            background: rgba(56, 139, 253, 0.03); border: 1px solid rgba(56, 139, 253, 0.1); border-radius: 14px; padding: 20px; margin-bottom: 25px; text-align: left;
+        }
+        .download-title { font-size: 13px; font-weight: 600; color: #ffffff; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.03em; }
+        .os-tabs { display: flex; gap: 8px; margin-bottom: 15px; }
+        .os-tab-btn { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: #8a8993; font-size: 12px; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+        .os-tab-btn.active { background: rgba(56, 139, 253, 0.15); border-color: #38bdf8; color: #38bdf8; }
+
         .tech-info-block { text-align: left; border-top: 1px solid rgba(255, 255, 255, 0.04); padding-top: 20px; }
         .tech-title { font-size: 12px; font-weight: 600; text-transform: uppercase; color: #52525b; letter-spacing: 0.05em; margin-bottom: 8px; margin-top: 18px; }
         .tech-title:first-child { margin-top: 0; }
         .tech-text { font-size: 13px; color: #6e6d7a; line-height: 1.6; margin: 0 0 12px 0; }
         
-        /* Две кнопки управления */
-        .btn-stack { margin-top: 25px; display: flex; flex-direction: column; gap: 12px; }
+        /* Кнопки переходов */
+        .btn-stack { margin-top: 5px; display: flex; flex-direction: column; gap: 12px; }
         .btn {
             display: block; text-align: center; padding: 14px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 12px; transition: all 0.2s ease; box-sizing: border-box;
         }
-        .btn-main { background: #ffffff; color: #050508; box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1); }
-        .btn-main:hover { background: #e4e4e7; transform: translateY(-1px); }
+        .btn-blue { background: #38bdf8; color: #050508; font-weight: 700; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15); }
+        .btn-blue:hover { background: #7dd3fc; transform: translateY(-1px); }
         .btn-sub { background: rgba(255, 255, 255, 0.03); color: #f4f4f6; border: 1px solid rgba(255, 255, 255, 0.08); }
         .btn-sub:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.15); transform: translateY(-1px); }
 
@@ -77,10 +88,11 @@
 </head>
 <body>
     <div class="main-card">
-        <div class="badge"><span class="pulse-dot"></span>СИСТЕМЫ ОНЛАЙН // OPERATIONAL</div>
+        <div class="badge"><span class="pulse-dot"></span>ОТКРЫТЫЙ ИСХОДНЫЙ КОД // OPEN SOURCE</div>
         <h1>ShadowsLTD API</h1>
-        <p class="subtitle">Система изолированной маршрутизации данных. Доступ к конечным точкам ограничен протоколами сквозного шифрования.</p>
+        <p class="subtitle">Свободная инфраструктурная платформа для изолированной маршрутизации данных и распределенного обмена пакетами.</p>
 
+        <!-- Метрики сети -->
         <div class="metrics-bar">
             <div class="metric-item">
                 <div class="metric-label">Node latency</div>
@@ -96,19 +108,48 @@
             </div>
         </div>
 
+        <!-- ИНТЕРАКТИВНЫЙ БЛОК СКАЧИВАНИЯ -->
+        <div class="download-box">
+            <div class="download-title">Исполняемые файлы ядра (Core Binaries)</div>
+            <div class="os-tabs">
+                <button id="os-win" class="os-tab-btn active" onclick="setOS('win')">Windows x64</button>
+                <button id="os-linux" class="os-tab-btn" onclick="setOS('linux')">Linux amd64</button>
+            </div>
+            <a href="data:text/plain;charset=utf-8,SHADOWSLTD_CORE_INIT_OK" download="shadows-core-v4.2.1.exe" id="download-btn" class="btn btn-blue">
+                Скачать скомпилированное ядро (v4.2.1)
+            </a>
+        </div>
+
         <div class="tech-info-block">
             <div class="tech-title">Спецификация архитектуры</div>
-            <p class="tech-text">Распределенная инфраструктура ядра ShadowsLTD функционирует на базе децентрализованных узлов обработки очередей. Балансировка входящих сессий распределяется динамическими инспекторами трафика Tier-4.</p>
+            <p class="tech-text">Распределенная инфраструктура ShadowsLTD функционирует без централизованного сервера авторизации. Балансировка сессий распределяется динамическими инспекторами трафика Tier-4.</p>
         </div>
 
-        <!-- Кнопки с исправленной ссылкой на login.html -->
+        <!-- Второстепенные кнопки ссылок -->
         <div class="btn-stack">
-            <a href="docs.html" class="btn btn-main">Открыть спецификацию Core API</a>
-            <a href="login.html" class="btn btn-sub">Вход в терминал управления (IAM Console)</a>
+            <a href="docs.html" class="btn btn-sub">Открыть спецификацию Core API</a>
+            <a href="login.html" class="btn btn-sub" style="color: #62616a; font-size: 12px; border: none; padding: 4px;">Управление узлами (IAM Console)</a>
         </div>
 
-        <div class="footer">&copy; 2026 ShadowsLTD Nodes. Все права защищены.</div>
+        <div class="footer">&copy; 2026 ShadowsLTD Project. Распространяется бесплатно под лицензией MIT.</div>
     </div>
+
+    <script>
+        // Переключение расширения скачиваемого файла прямо на главной
+        function setOS(os) {
+            document.getElementById('os-win').classList.remove('active');
+            document.getElementById('os-linux').classList.remove('active');
+            const btn = document.getElementById('download-btn');
+            
+            if (os === 'win') {
+                document.getElementById('os-win').classList.add('active');
+                btn.setAttribute('download', 'shadows-core-v4.2.1.exe');
+            } else {
+                document.getElementById('os-linux').classList.add('active');
+                btn.setAttribute('download', 'shadows-core-v4.2.1.tar.gz');
+            }
+        }
+    </script>
 </body>
 </html>
 
