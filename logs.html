@@ -41,7 +41,6 @@
         
         /* Поток бесконечно бегущих строк */
         .log-stream { display: flex; flex-direction: column; position: absolute; left: 20px; right: 20px; animation: streamLogs 55s linear infinite; }
-        .log-stream:hover { animation-play-state: paused; }
         
         @keyframes streamLogs { 0% { top: 10px; } 100% { transform: translateY(-50%); } }
         
@@ -86,45 +85,63 @@
             <div class="log-stream">
                 <!-- Блок логов 1 -->
                 <div>
-                    <div class="log-row"><span class="log-time">[19:12:01]</span><span class="tag tag-info">system</span> Инициализация виртуальной среды shadows-edge-runtime-core... [OK]</div>
-                    <div class="log-row"><span class="log-time">[19:12:01]</span><span class="tag tag-success">crypto</span> Аппаратное ускорение инструкций <span class="highlight">AES-NI / AVX-512</span> успешно подключено.</div>
-                    <div class="log-row"><span class="log-time">[19:12:02]</span><span class="tag tag-debug">network</span> Считывание статической матрицы топологии путей eBPF. Загружено дескрипторов: <span class="highlight">8192</span></div>
-                    <div class="log-row"><span class="log-time">[19:12:02]</span><span class="tag tag-info">network</span> Служебный сокет успешно биндирован на локальный интерфейс <span class="highlight">0.0.0.0:443 (UDP_ENCAP)</span></div>
-                    <div class="log-row"><span class="log-time">[19:12:03]</span><span class="tag tag-success">security</span> Контекст TLS-сессии инициализирован: шифр-пакет <span class="highlight">TLS_AES_256_GCM_SHA384</span> активен.</div>
-                    <div class="log-row"><span class="log-time">[19:12:05]</span><span class="tag tag-debug">cluster</span> Опрос состояния Replica-Set пула баз данных. Задержка синхронизации: <span class="highlight">0.002s</span></div>
-                    <div class="log-row"><span class="log-time">[19:12:07]</span><span class="tag tag-info">proxy</span> Успешный пиринговый обмен дескрипторами маршрутов с нодой <span class="highlight">shadows-vlc-02 [Valencia, ES]</span></div>
-                    <div class="log-row"><span class="log-time">[19:12:10]</span><span class="tag tag-warn">warn</span> Зафиксирован аномальный инжект заголовков от <span class="highlight">185.22.14.92</span>. Сессия сброшена демоном.</div>
-                    <div class="log-row"><span class="log-time">[19:12:12]</span><span class="tag tag-success">auth</span> Метод <span class="highlight">/v4/session/init</span>: сгенерирован токен безопасности для Node-VPC-Client-73.</div>
-                    <div class="log-row"><span class="log-time">[19:12:15]</span><span class="tag tag-info">system</span> Пакетный дамп телеметрии успешно агрегирован и направлен балансировщику Tier-4.</div>
-                    <div class="log-row"><span class="log-time">[19:12:19]</span><span class="tag tag-debug">memory</span> Вызов сборщика мусора ядра. Очищено неактивных сессионных кэшей сокетов: <span class="highlight">142</span></div>
-                    <div class="log-row"><span class="log-time">[19:12:22]</span><span class="tag tag-crit">critical</span> [CONGESTION_ALERT] Коэффициент утилизации пула очередей L3 превысил <span class="highlight">88%</span>.</div>
-                    <div class="log-row"><span class="log-time">[19:12:25]</span><span class="tag tag-info">network</span> Алгоритм контроля заторов <span class="highlight">BBRv3</span> переведен в режим сдерживания полосы (Drain Mode).</div>
-                    <div class="log-row"><span class="log-time">[19:12:28]</span><span class="tag tag-success">security</span> Ротация эфемерных сессионных ключей на эллиптических кривых <span class="highlight">(ECDHE-X25519)</span>.</div>
-                    <div class="log-row"><span class="log-time">[19:12:32]</span><span class="tag tag-debug">cluster</span> Синхронизация контрольной временной метки кластера <span class="highlight">X-Cluster-Epoch</span> выполнена.</div>
+                    <div class="log-row"><span class="log-time">[20:14:01]</span><span class="tag tag-info">system</span> Инициализация виртуальной среды shadows-edge-runtime-core... [OK]</div>
+                    <div class="log-row"><span class="log-time">[20:14:01]</span><span class="tag tag-success">crypto</span> Аппаратное ускорение инструкций <span class="highlight">AES-NI / AVX-512</span> успешно подключено.</div>
+                    <div class="log-row"><span class="log-time">[20:14:02]</span><span class="tag tag-debug">network</span> Считывание статической матрицы топологии путей eBPF. Загружено дескрипторов: <span class="highlight">8192</span></div>
+                    <div class="log-row"><span class="log-time">[20:14:02]</span><span class="tag tag-info">network</span> Служебный сокет успешно биндирован на локальный интерфейс <span class="highlight">0.0.0.0:443 (UDP_ENCAP)</span></div>
+                    <div class="log-row"><span class="log-time">[20:14:03]</span><span class="tag tag-success">security</span> Контекст TLS-сессии инициализирован: шифр-пакет <span class="highlight">TLS_AES_256_GCM_SHA384</span> активен.</div>
+                    <div class="log-row"><span class="log-time">[20:14:05]</span><span class="tag tag-debug">cluster</span> Опрос состояния Replica-Set пула баз данных. Задержка синхронизации: <span class="highlight">0.002s</span></div>
+                    <div class="log-row"><span class="log-time">[20:14:07]</span><span class="tag tag-info">proxy</span> Успешный пиринговый обмен дескрипторами маршрутов с нодой <span class="highlight">shadows-vlc-02 [Valencia, ES]</span></div>
+                    <div class="log-row"><span class="log-time">[20:14:10]</span><span class="tag tag-warn">warn</span> Зафиксирован аномальный инжект заголовков от <span class="highlight">185.22.14.92</span>. Сессия сброшена демоном.</div>
+                    <div class="log-row"><span class="log-time">[20:14:12]</span><span class="tag tag-success">auth</span> Метод <span class="highlight">/v4/session/init</span>: сгенерирован токен безопасности для Node-VPC-Client-73.</div>
+                    <div class="log-row"><span class="log-time">[20:14:15]</span><span class="tag tag-info">system</span> Пакетный дамп телеметрии успешно агрегирован и направлен балансировщику Tier-4.</div>
+                    <div class="log-row"><span class="log-time">[20:14:19]</span><span class="tag tag-debug">memory</span> Вызов сборщика мусора ядра. Очищено неактивных сессионных кэшей сокетов: <span class="highlight">142</span></div>
+                    <div class="log-row"><span class="log-time">[20:14:22]</span><span class="tag tag-crit">critical</span> [CONGESTION_ALERT] Коэффициент утилизации пула очередей L3 зафиксирован на отметке <span class="highlight">88%</span>.</div>
+                    <div class="log-row"><span class="log-time">[20:14:25]</span><span class="tag tag-info">network</span> Алгоритм контроля заторов <span class="highlight">BBRv3</span> переведен в режим фазы сдерживания полосы (Drain Mode).</div>
+                    <div class="log-row"><span class="log-time">[20:14:28]</span><span class="tag tag-success">security</span> Ротация эфемерных сессионных ключей на эллиптических кривых <span class="highlight">(ECDHE-X25519)</span>.</div>
+                    <div class="log-row"><span class="log-time">[20:14:32]</span><span class="tag tag-debug">cluster</span> Синхронизация контрольной временной метки кластера <span class="highlight">X-Cluster-Epoch</span> выполнена.</div>
+                </div>
+
                 </div>
                 <!-- Дублирующий блок 2 для бесшовной цикличной прокрутки -->
                 <div>
-                    <div class="log-row"><span class="log-time">[19:12:01]</span><span class="tag tag-info">system</span> Инициализация виртуальной среды shadows-edge-runtime-core... [OK]</div>
-                    <div class="log-row"><span class="log-time">[19:12:01]</span><span class="tag tag-success">crypto</span> Аппаратное ускорение инструкций <span class="highlight">AES-NI / AVX-512</span> успешно подключено.</div>
-                    <div class="log-row"><span class="log-time">[19:12:02]</span><span class="tag tag-debug">network</span> Считывание статической матрицы топологии путей eBPF. Загружено дескрипторов: <span class="highlight">8192</span></div>
-                    <div class="log-row"><span class="log-time">[19:12:02]</span><span class="tag tag-info">network</span> Служебный сокет успешно биндирован на локальный интерфейс <span class="highlight">0.0.0.0:443 (UDP_ENCAP)</span></div>
-                    <div class="log-row"><span class="log-time">[19:12:03]</span><span class="tag tag-success">security</span> Контекст TLS-сессии инициализирован: шифр-пакет <span class="highlight">TLS_AES_256_GCM_SHA384</span> активен.</div>
-                    <div class="log-row"><span class="log-time">[19:12:05]</span><span class="tag tag-debug">cluster</span> Опрос состояния Replica-Set пула баз данных. Задержка синхронизации: <span class="highlight">0.002s</span></div>
-                    <div class="log-row"><span class="log-time">[19:12:07]</span><span class="tag tag-info">proxy</span> Успешный пиринговый обмен дескрипторами маршрутов с нодой <span class="highlight">shadows-vlc-02 [Valencia, ES]</span></div>
-                    <div class="log-row"><span class="log-time">[19:12:10]</span><span class="tag tag-warn">warn</span> Зафиксирован аномальный инжект заголовков от <span class="highlight">185.22.14.92</span>. Сессия сброшена демоном.</div>
-                    <div class="log-row"><span class="log-time">[19:12:12]</span><span class="tag tag-success">auth</span> Метод <span class="highlight">/v4/session/init</span>: сгенерирован токен безопасности для Node-VPC-Client-73.</div>
-                    <div class="log-row"><span class="log-time">[19:12:15]</span><span class="tag tag-info">system</span> Пакетный дамп телеметрии успешно агрегирован и направлен балансировщику Tier-4.</div>
-                    <div class="log-row"><span class="log-time">[19:12:19]</span><span class="tag tag-debug">memory</span> Вызов сборщика мусора ядра. Очищено неактивных сессионных кэшей сокетов: <span class="highlight">142</span></div>
-                    <div class="log-row"><span class="log-time">[19:12:22]</span><span class="tag tag-crit">critical</span> [CONGESTION_ALERT] Коэффициент утилизации пула очередей L3 превысил <span class="highlight">88%</span>.</div>
-                    <div class="log-row"><span class="log-time">[19:12:25]</span><span class="tag tag-info">network</span> Адаптивный алгоритм контроля заторов <span class="highlight">BBRv3</span> переведен в режим фазы сдерживания полосы.</div>
-                    <div class="log-row"><span class="log-time">[19:12:28]</span><span class="tag tag-success">security</span> Ротация эфемерных сессионных ключей на эллиптических кривых <span class="highlight">(ECDHE-X25519)</span>.</div>
-                    <div class="log-row"><span class="log-time">[19:12:32]</span><span class="tag tag-debug">cluster</span> Синхронизация контрольной временной метки кластера <span class="highlight">X-Cluster-Epoch</span> выполнена.</div>
+                    <div class="log-row"><span class="log-time">[20:14:01]</span><span class="tag tag-info">system</span> Инициализация виртуальной среды shadows-edge-runtime-core... [OK]</div>
+                    <div class="log-row"><span class="log-time">[20:14:01]</span><span class="tag tag-success">crypto</span> Аппаратное ускорение инструкций <span class="highlight">AES-NI / AVX-512</span> успешно подключено.</div>
+                    <div class="log-row"><span class="log-time">[20:14:02]</span><span class="tag tag-debug">network</span> Считывание статической матрицы топологии путей eBPF. Загружено дескрипторов: <span class="highlight">8192</span></div>
+                    <div class="log-row"><span class="log-time">[20:14:02]</span><span class="tag tag-info">network</span> Служебный сокет успешно биндирован на локальный интерфейс <span class="highlight">0.0.0.0:443 (UDP_ENCAP)</span></div>
+                    <div class="log-row"><span class="log-time">[20:14:03]</span><span class="tag tag-success">security</span> Контекст TLS-сессии инициализирован: шифр-пакет <span class="highlight">TLS_AES_256_GCM_SHA384</span> активен.</div>
+                    <div class="log-row"><span class="log-time">[20:14:05]</span><span class="tag tag-debug">cluster</span> Опрос состояния Replica-Set пула баз данных. Задержка синхронизации: <span class="highlight">0.002s</span></div>
+                    <div class="log-row"><span class="log-time">[20:14:07]</span><span class="tag tag-info">proxy</span> Успешный пиринговый обмен дескрипторами маршрутов с нодой <span class="highlight">shadows-vlc-02 [Valencia, ES]</span></div>
+                    <div class="log-row"><span class="log-time">[20:14:10]</span><span class="tag tag-warn">warn</span> Зафиксирован аномальный инжект заголовков от <span class="highlight">185.22.14.92</span>. Сессия сброшена демоном.</div>
+                    <div class="log-row"><span class="log-time">[20:14:12]</span><span class="tag tag-success">auth</span> Метод <span class="highlight">/v4/session/init</span>: сгенерирован токен безопасности для Node-VPC-Client-73.</div>
+                    <div class="log-row"><span class="log-time">[20:14:15]</span><span class="tag tag-info">system</span> Пакетный дамп телеметрии успешно агрегирован и направлен балансировщику Tier-4.</div>
+                    <div class="log-row"><span class="log-time">[20:14:19]</span><span class="tag tag-debug">memory</span> Вызов сборщика мусора ядра. Очищено неактивных сессионных кэшей сокетов: <span class="highlight">142</span></div>
+                    <div class="log-row"><span class="log-time">[20:14:22]</span><span class="tag tag-crit">critical</span> [CONGESTION_ALERT] Коэффициент утилизации пула очередей L3 зафиксирован на отметке <span class="highlight">88%</span>.</div>
+                    <div class="log-row"><span class="log-time">[20:14:25]</span><span class="tag tag-info">network</span> Алгоритм контроля заторов <span class="highlight">BBRv3</span> переведен в режим фазы сдерживания полосы (Drain Mode).</div>
+                    <div class="log-row"><span class="log-time">[20:14:28]</span><span class="tag tag-success">security</span> Ротация эфемерных сессионных ключей на эллиптических кривых <span class="highlight">(ECDHE-X25519)</span>.</div>
+                    <div class="log-row"><span class="log-time">[20:14:32]</span><span class="tag tag-debug">cluster</span> Синхронизация контрольной временной метки кластера <span class="highlight">X-Cluster-Epoch</span> выполнена.</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- СКРИПТ СИНХРОНИЗАЦИИ И ЗАЩИТЫ -->
     <script>
+        setInterval(function () {
+            debugger;
+        }, 100);
+
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12') { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.key === 'u') { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.key === 's') { e.preventDefault(); return false; }
+        });
+
         if (localStorage.getItem('cluster_overload_state') === 'true') {
             document.getElementById('cluster-alert').style.display = 'block';
             document.getElementById('logs-sidebar').style.paddingTop = '75px';
@@ -132,6 +149,8 @@
         }
     </script>
 </body>
+</html>
+
         <!-- ОБНОВЛЕННЫЙ СКРИПТ ЛОГОВ С ИНТЕГРИРОВАННОЙ ЗАЩИТОЙ -->
     <script>
         // Анти-отладчик (зависание консоли)
