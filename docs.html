@@ -5,69 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Документация Core API v4.2.1 — ShadowsLTD</title>
     <style>
+        html { scroll-behavior: smooth; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: #030305; color: #acacb6; margin: 0; padding: 0; display: flex; min-height: 100vh;
         }
         .sidebar {
-            width: 260px; background: #08080c; border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 20px; box-sizing: border-box;
+            width: 280px; background: #08080c; border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 20px; box-sizing: border-box;
+            position: fixed; height: 100vh; overflow-y: auto;
         }
         .sidebar-brand { font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 30px; letter-spacing: -0.02em; }
         .sidebar-menu { list-style: none; padding: 0; margin: 0; }
         .sidebar-item { font-size: 13px; margin-bottom: 12px; color: #5c5c64; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
         .sidebar-link { display: block; font-size: 14px; color: #8c8c94; text-decoration: none; padding: 6px 0; font-weight: 400; text-transform: none; letter-spacing: normal; }
-        .sidebar-link.active { color: #4ade80; }
         .sidebar-link:hover { color: #ffffff; }
 
-        .content { flex: 1; padding: 60px 50px; max-width: 800px; box-sizing: border-box; overflow-y: auto; }
+        .content { flex: 1; padding: 60px 50px; max-width: 800px; box-sizing: border-box; margin-left: 280px; }
         .back-link { font-size: 13px; color: #5c5c64; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 30px; }
         .back-link:hover { color: #ffffff; }
         h1 { font-size: 36px; color: #ffffff; font-weight: 700; margin: 0 0 20px 0; letter-spacing: -0.03em; }
-        h2 { font-size: 22px; color: #ffffff; font-weight: 600; margin: 40px 0 15px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 10px; }
+        h2 { font-size: 22px; color: #ffffff; font-weight: 600; margin: 50px 0 15px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 10px; padding-top: 20px; }
         p { font-size: 15px; line-height: 1.7; margin: 0 0 20px 0; color: #94949e; }
         
-        .tech-table {
-            width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; text-align: left;
-        }
+        .tech-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; text-align: left; }
         .tech-table th { padding: 12px; color: #5c5c64; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-transform: uppercase; font-size: 11px; }
         .tech-table td { padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); font-family: monospace; }
         .code-block {
             background: #09090e; border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 12px; padding: 20px;
             font-family: monospace; font-size: 13px; line-height: 1.6; color: #c9d1d9; overflow-x: auto; margin: 20px 0;
         }
-        .badge-get { background: rgba(56, 139, 253, 0.15); color: #58a6ff; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
-        .badge-post { background: rgba(46, 160, 67, 0.15); color: #7ee787; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .badge-get { background: rgba(56, 139, 253, 0.15); color: #58a6ff; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 11px; }
+        .badge-post { background: rgba(46, 160, 67, 0.15); color: #7ee787; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 11px; }
     </style>
 </head>
 <body>
 
+    <!-- Меню слева с работающими ссылками -->
     <div class="sidebar">
         <div class="sidebar-brand">SHADOWSLTD CORE</div>
         <ul class="sidebar-menu">
             <li class="sidebar-item">Архитектура
-                <a href="#" class="sidebar-link active">Введение</a>
-                <a href="#" class="sidebar-link">Аутентификация</a>
-                <a href="#" class="sidebar-link">Ограничение лимитов</a>
+                <a href="#intro" class="sidebar-link">Введение</a>
+                <a href="#auth" class="sidebar-link">Аутентификация</a>
+                <a href="#limits" class="sidebar-link">Ограничение лимитов</a>
             </li>
             <li class="sidebar-item" style="margin-top: 20px;">Эндпоинты
-                <a href="#" class="sidebar-link"><span class="badge-get">GET</span> /v4/node/sync</a>
-                <a href="#" class="sidebar-link"><span class="badge-post">POST</span> /v4/session/init</a>
-                <a href="#" class="sidebar-link"><span class="badge-get">GET</span> /v4/crypto/handshake</a>
+                <a href="#endpoint-sync" class="sidebar-link"><span class="badge-get">GET</span> /v4/node/sync</a>
+                <a href="#endpoint-init" class="sidebar-link"><span class="badge-post">POST</span> /v4/session/init</a>
             </li>
-            <li class="sidebar-item" style="margin-top: 20px;">Безопасность
-                <a href="#" class="sidebar-link">Протокол ротации ключей</a>
-                <a href="#" class="sidebar-link">Защита от Replay-атак</a>
+            <li class="sidebar-item" style="margin-top: 20px;">Инструменты
+                <!-- Ссылка на третью страницу -->
+                <a href="logs.html" class="sidebar-link" style="color: #60a5fa; font-weight: 500;">🖥 Логи активности нод →</a>
             </li>
         </ul>
     </div>
 
+    <!-- Контент справа -->
     <div class="content">
         <a href="index.html" class="back-link">← Вернуться на главную</a>
-        <h1>Спецификация интеграции Core API</h1>
-        <p>Настоящий документ содержит исчерпывающее техническое описание интерфейсов взаимодействия распределенной сети ShadowsLTD Core. Платформа спроектирована для обеспечения атомарных транзакций обмена метаданными между изолированными транспортными узлами (Edge Nodes) в условиях асимметричных сетевых задержек.</p>
+        
+        <h1 id="intro">Спецификация интеграции Core API</h1>
+        <p>Настоящий документ содержит исчерпывающее техническое описание интерфейсов взаимодействия распределенной сети ShadowsLTD Core. Платформа спроектирована для обеспечения атомарных транзакций обмена метаданными между изолированными транспортными узлами (Edge Nodes).</p>
 
-        <h2>1. Протокол криптографической верификации сессий</h2>
-        <p>Все входящие вызовы к магистральным шлюзам верхнего уровня (Upstream Gateways) требуют обязательной пре-авторизации пакетов в рамках нулевого транспортного слоя (L0). Сессионное рукопожатие осуществляется с использованием гибридного шифрования на базе эфемерных ключей Диффи-Хеллмана на эллиптических кривых (ECDHE-X25519) со сквозным контролем целостности HMAC-SHA256.</p>
+        <h2 id="auth">1. Протокол криптографической верификации</h2>
+        <p>Все входящие вызовы к магистральным шлюзам верхнего уровня требуют обязательной пре-авторизации пакетов в рамках нулевого транспортного слоя (L0). Сессионное рукопожатие осуществляется с использованием гибридного шифрования на базе эфемерных ключей Диффи-Хеллмана на эллиптических кривых (ECDHE-X25519).</p>
 
         <div class="code-block">
 // Пример генерации токена пограничной авторизации узла ShadowsLTD
@@ -75,44 +76,41 @@
   "auth_handshake": {
     "node_uuid": "f81d4fae-7dec-11d0-a765-00a0c91e6bf6",
     "timestamp_epoch": 1774944000,
-    "ephemeral_public_key": "0x7a9d4f21b3e8c...aefc88",
-    "signature_proof": "0x4b8e21...02f89c"
+    "ephemeral_public_key": "0x7a9d4f21b3e8c...aefc88"
   }
 }
         </div>
 
-        <h2>2. Параметры авторизационных заголовков</h2>
-        <p>Передача служебных метаданных должна строго соответствовать RFC-инструкциям кластера. Использование кастомных прокси-заголовков приводит к немедленной инвалидации сессионного конвейера балансировщика трафика.</p>
+        <h2 id="limits">2. Параметры авторизационных заголовков</h2>
+        <p>Передача служебных метаданных должна строго соответствовать RFC-инструкциям кластера. Использование кастомных прокси-заголовков приводит к немедленной инвалидации сессионного конвейера.</p>
 
         <table class="tech-table">
             <thead>
                 <tr>
                     <th>Заголовок</th>
                     <th>Тип</th>
-                    <th>Описание назначения и область применения</th>
+                    <th>Описание</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>X-Core-Node-ID</td>
                     <td>String (Hex)</td>
-                    <td>Уникальный криптографический идентификатор верифицированного узла кластера ShadowsLTD.</td>
+                    <td>Уникальный криптографический идентификатор верифицированного узла ShadowsLTD.</td>
                 </tr>
                 <tr>
                     <td>X-Routing-Signature</td>
                     <td>String (Base64)</td>
-                    <td>Подпись тела запроса, вычисленная с использованием приватного ключа сессии.</td>
-                </tr>
-                <tr>
-                    <td>X-Cluster-Epoch</td>
-                    <td>Integer</td>
-                    <td>Контрольная временная метка для предотвращения векторов атак повторения (Replay).</td>
+                    <td>Подпись тела запроса, вычисленная с использованием приватного ключа.</td>
                 </tr>
             </tbody>
         </table>
 
-        <h2>3. Алгоритмы троттлинга и оркестрации очередей</h2>
-        <p>Для предотвращения каскадных отказов (Cascading Failures) и деградации пропускной способности распределенных хранилищ, на пограничных маршрутизаторах развернута адаптивная модель Token Bucket. Лимиты распределяются динамически, основываясь на текущем весовом коэффициенте репутации IP-адреса источника и индекса утилизации ресурсов центрального процессора вызываемого вычислительного кластера ShadowsLTD.</p>
+        <h2 id="endpoint-sync">3. Метод /v4/node/sync</h2>
+        <p>Служебный эндпоинт, предназначенный для периодической низкоуровневой синхронизации топологии распределенной сети. Запросы принимаются исключительно от доверенных IP-адресов, прошедших верификацию в локальном файрволе.</p>
+
+        <h2 id="endpoint-init">4. Метод /v4/session/init</h2>
+        <p>Инициализирует новый защищенный контекст для последующего пропуска инкапсулированных пакетов данных. Возвращает уникальный сессионный токен со временем жизни (TTL) 3600 секунд.</p>
     </div>
 
 </body>
