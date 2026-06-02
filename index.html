@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShadowsLTD — Открытая техническая платформа</title>
+    <title>ShadowsLTD — Инфраструктурная платформа</title>
     <style>
         /* Премиальная темная тема с сеткой и градиентным свечением */
         body {
@@ -12,30 +12,35 @@
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px),
-                radial-gradient(at 50% 0%, rgba(34, 197, 94, 0.06) 0px, transparent 50%);
+                radial-gradient(at 50% 0%, rgba(34, 197, 94, 0.05) 0px, transparent 50%);
             background-size: 40px 40px, 40px 40px, 100% 100%;
             color: #f4f4f6; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box;
         }
 
         /* Карточка с эффектом размытия и мягкой внешней тенью */
         .main-card {
-            background: rgba(8, 8, 12, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(8, 8, 12, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             border-radius: 28px;
             padding: 45px 40px;
             max-width: 540px;
             width: 100%;
             margin: 40px 20px;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 100px rgba(34, 197, 94, 0.02);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             position: relative;
+            transition: border-color 0.5s ease;
+        }
+
+        .main-card:hover {
+            border-color: rgba(34, 197, 94, 0.15);
         }
 
         /* Линейный декоративный элемент сверху карточки */
         .main-card::before {
-            content: ''; position: absolute; top: -1px; left: 10%; right: 10%; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.3), transparent);
+            content: ''; position: absolute; top: -1px; left: 15%; right: 15%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.25), transparent);
         }
 
         /* Компактный двойной бейдж статуса и версии */
@@ -50,7 +55,7 @@
         }
 
         .badge-version {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06);
             color: #a1a1aa;
         }
 
@@ -70,13 +75,13 @@
 
         /* Заголовок со сложным неоново-зеленым градиентом */
         h1 {
-            font-size: 36px; font-weight: 700; letter-spacing: -0.03em; margin: 0 0 14px 0;
-            background: linear-gradient(135deg, #ffffff 30%, #4ade80 100%);
+            font-size: 38px; font-weight: 700; letter-spacing: -0.04em; margin: 0 0 14px 0;
+            background: linear-gradient(135deg, #ffffff 40%, #4ade80 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             text-align: center;
         }
 
-        .subtitle { font-size: 15px; color: #8a8993; line-height: 1.6; margin: 0 0 30px 0; text-align: center; }
+        .subtitle { font-size: 14px; color: #8a8993; line-height: 1.6; margin: 0 0 30px 0; text-align: center; }
         
         /* Сетка метрик */
         .metrics-bar {
@@ -106,20 +111,36 @@
             75%   { transform: translateY(-48px); }
         }
         
-        /* Кнопка скачивания ядра */
+        /* Кнопка скачивания ядра (ЗАБЛОКИРОВАННАЯ) */
         .download-box {
             background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.03);
             border-radius: 16px; padding: 22px; margin-bottom: 25px; text-align: left;
         }
         .download-title { font-size: 11px; font-weight: 600; color: #52525b; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
         .os-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-        .os-tab-btn { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); color: #8a8993; font-size: 12px; padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .os-tab-btn.active { background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .os-tab-btn { background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.04); color: #52525b; font-size: 12px; padding: 7px 14px; border-radius: 8px; cursor: pointer; }
+        .os-tab-btn.active { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.08); color: #a1a1aa; }
+
+        .btn-disabled {
+            width: 100%; padding: 14px; font-size: 14px; font-weight: 600; border-radius: 12px; box-sizing: border-box; cursor: pointer;
+            background: rgba(255, 255, 255, 0.02); color: #52525b; border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex; justify-content: center; align-items: center; transition: all 0.2s ease;
+        }
+        .btn-disabled:hover { background: rgba(255, 255, 255, 0.04); color: #71717a; }
+
+        /* Всплывающее предупреждение */
+        .alert-toast {
+            display: none; padding: 12px 16px; background: rgba(251, 191, 36, 0.06); border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 10px; color: #fbbf24; font-size: 12px; line-height: 1.5; margin-top: 12px; text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
         .tech-info-block { text-align: left; border-top: 1px solid rgba(255, 255, 255, 0.03); padding-top: 20px; }
         .tech-title { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #52525b; letter-spacing: 0.05em; margin-bottom: 8px; margin-top: 18px; }
         .tech-title:first-child { margin-top: 0; }
-        .tech-text { font-size: 13px; color: #71717a; line-height: 1.6; margin: 0 0 12px 0; }
+        .tech-text { font-size: 13px; color: #6e6d7a; line-height: 1.6; margin: 0 0 12px 0; }
         
         /* Блок О нас */
         .about-block {
@@ -130,12 +151,10 @@
         
         /* Кнопки переходов */
         .btn-stack { margin-top: 5px; display: flex; flex-direction: column; gap: 12px; }
-        .btn {
-            display: flex; justify-content: center; align-items: center; padding: 14px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 12px; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); box-sizing: border-box; cursor: pointer;
+        .btn-sub { 
+            display: flex; justify-content: center; align-items: center; padding: 14px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 12px; box-sizing: border-box; cursor: pointer;
+            background: rgba(255, 255, 255, 0.02); color: #f4f4f6; border: 1px solid rgba(255, 255, 255, 0.06); transition: all 0.2s ease;
         }
-        .btn-blue { background: #ffffff; color: #030307; box-shadow: 0 4px 20px rgba(255, 255, 255, 0.08); border: none; width: 100%; }
-        .btn-blue:hover { background: #e4e4e7; transform: translateY(-1px); }
-        .btn-sub { background: rgba(255, 255, 255, 0.02); color: #f4f4f6; border: 1px solid rgba(255, 255, 255, 0.06); }
         .btn-sub:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.12); transform: translateY(-1px); }
 
         .footer { font-size: 11px; color: #3f3f46; border-top: 1px solid rgba(255, 255, 255, 0.03); padding-top: 20px; margin-top: 30px; text-align: center; }
@@ -143,7 +162,6 @@
 </head>
 <body>
     <div class="main-card">
-        <!-- Блок бейджей с исправленным статусом ONLINE -->
         <div class="badge-container">
             <div class="badge"><span class="pulse-dot"></span>ONLINE</div>
             <div class="badge badge-version">v0.1.1 (BETA)</div>
@@ -152,7 +170,6 @@
         <h1>ShadowsLTD API</h1>
         <p class="subtitle">Свободная инфраструктурная платформа для изолированной маршрутизации данных и распределенного обмена пакетами.</p>
 
-        <!-- Метрики -->
         <div class="metrics-bar">
             <div class="metric-item">
                 <div class="metric-label">Node latency</div>
@@ -168,23 +185,9 @@
             </div>
         </div>
 
-        <!-- Блок скачивания -->
+        <!-- НЕРАБОЧИЙ БЛОК СКАЧИВАНИЯ -->
         <div class="download-box">
             <div class="download-title">Исполняемые файлы ядра (Core Binaries)</div>
             <div class="os-tabs">
-                <button id="os-win" class="os-tab-btn active" onclick="setOS('win')">Windows x64</button>
-                <button id="os-linux" class="os-tab-btn" onclick="setOS('linux')">Linux amd64</button>
-            </div>
-            <a href="data:text/plain;charset=utf-8,SHADOWSLTD_CORE_INIT_OK" download="shadows-core-v0.1.1-beta.exe" id="download-btn" class="btn btn-blue">
-                Скачать стабильный релиз (v0.1.1)
-            </a>
-        </div>
-
-        <div class="tech-info-block">
-            <div class="tech-title">Спецификация архитектуры</div>
-            <p class="tech-text">Распределенная инфраструктура ShadowsLTD функционирует без централизованного сервера авторизации. Балансировка сессий распределяется динамическими инспекторами трафика Tier-4.</p>
-        </div>
-
-        <!-- Разворачивающийся блок О нас -->
-
+                <button class="os-tab-btn active">Windows x64</button>
 
