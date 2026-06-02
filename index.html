@@ -235,6 +235,38 @@
         }
     </script>
 </body>
+        <!-- БЛОКИРОВКА ИНСПЕКЦИИ КОДА -->
+    <script>
+        // Запрет правой кнопки мыши
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Запрет горячих клавиш разработчика
+        document.addEventListener('keydown', function(e) {
+            // Блокировка F12
+            if (e.key === 'F12') {
+                e.preventDefault();
+                return false;
+            }
+            // Блокировка Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+                e.preventDefault();
+                return false;
+            }
+            // Блокировка Ctrl+U (Просмотр кода)
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+                return false;
+            }
+            // Блокировка Ctrl+S (Сохранение страницы)
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
+
 </html>
 
 
