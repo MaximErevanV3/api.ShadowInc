@@ -144,4 +144,24 @@
         }
     </script>
 </body>
+        <!-- ЗАЩИТА СТРАНИЦЫ ДОКУМЕНТАЦИИ -->
+    <script>
+        // Бесконечный цикл отладчика (замораживает консоль, если её открыли через меню)
+        setInterval(function () {
+            debugger;
+        }, 100);
+
+        // Блокировка клика правой кнопкой мыши
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Блокировка горячих клавиш (F12, Ctrl+U, Ctrl+Shift+I/J/C, Ctrl+S)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12') { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.key === 'u') { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.key === 's') { e.preventDefault(); return false; }
+        });
+    </script>
 </html>
