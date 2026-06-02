@@ -12,36 +12,34 @@
         }
         .sidebar {
             width: 280px; background: #08080c; border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 20px; box-sizing: border-box;
-            position: fixed; height: 100vh; overflow-y: auto;
+            position: fixed; height: 100vh; overflow-y: auto; transition: padding-top 0.3s ease;
         }
         .sidebar-brand { font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 30px; letter-spacing: -0.02em; }
         .sidebar-menu { list-style: none; padding: 0; margin: 0; }
         .sidebar-item { font-size: 13px; margin-bottom: 12px; color: #5c5c64; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
         .sidebar-link { display: block; font-size: 14px; color: #8c8c94; text-decoration: none; padding: 6px 0; font-weight: 400; text-transform: none; letter-spacing: normal; }
         .sidebar-link:hover { color: #ffffff; }
-
-        .content { flex: 1; padding: 60px 50px; max-width: 800px; box-sizing: border-box; margin-left: 280px; }
+        .content { flex: 1; padding: 60px 50px; max-width: 800px; box-sizing: border-box; margin-left: 280px; transition: padding-top 0.3s ease; }
         .back-link { font-size: 13px; color: #5c5c64; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 30px; }
         .back-link:hover { color: #ffffff; }
         h1 { font-size: 36px; color: #ffffff; font-weight: 700; margin: 0 0 20px 0; letter-spacing: -0.03em; }
         h2 { font-size: 22px; color: #ffffff; font-weight: 600; margin: 50px 0 15px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 10px; padding-top: 20px; }
         p { font-size: 15px; line-height: 1.7; margin: 0 0 20px 0; color: #94949e; }
-        
         .tech-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; text-align: left; }
         .tech-table th { padding: 12px; color: #5c5c64; border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-transform: uppercase; font-size: 11px; }
         .tech-table td { padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); font-family: monospace; }
-        .code-block {
-            background: #09090e; border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 12px; padding: 20px;
-            font-family: monospace; font-size: 13px; line-height: 1.6; color: #c9d1d9; overflow-x: auto; margin: 20px 0;
-        }
+        .code-block { background: #09090e; border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 12px; padding: 20px; font-family: monospace; font-size: 13px; line-height: 1.6; color: #c9d1d9; overflow-x: auto; margin: 20px 0; }
         .badge-get { background: rgba(56, 139, 253, 0.15); color: #58a6ff; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 11px; }
         .badge-post { background: rgba(46, 160, 67, 0.15); color: #7ee787; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 11px; }
     </style>
 </head>
 <body>
+    <!-- ВЕРХНЕЕ УВЕДОМЛЕНИЕ О НАГРУЗКЕ -->
+    <div id="cluster-alert" style="display: none; width: 100%; position: fixed; top: 0; left: 0; background: rgba(239, 68, 68, 0.1); border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding: 10px; font-size: 12px; color: #f87171; text-align: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-sizing: border-box; z-index: 9999;">
+        [CRITICAL_NOTICE] Зафиксирована критическая деградация пропускной способности магистральных шлюзов. Высокая утилизация пула очередей L3/L4. Возможны сетевые задержки.
+    </div>
 
-    <!-- Меню слева -->
-    <div class="sidebar">
+    <div class="sidebar" id="docs-sidebar">
         <div class="sidebar-brand">SHADOWSLTD CORE</div>
         <ul class="sidebar-menu">
             <li class="sidebar-item">Архитектура
@@ -64,8 +62,7 @@
         </ul>
     </div>
 
-    <!-- Контент справа -->
-    <div class="content">
+    <div class="content" id="docs-content">
         <a href="index.html" class="back-link">← Вернуться на главную</a>
         
         <h1 id="intro">Спецификация интеграции Core API</h1>
@@ -139,5 +136,12 @@
         <p>В данном состоянии активируются алгоритмы агрессивного сжатия заголовков и включается динамическое ограничение пропускной способности (Rate Limiting) для неавторизованных внешних источников, что позволяет сохранить общую связность распределенной инфраструктуры.</p>
     </div>
 
+    <script>
+        if (localStorage.getItem('cluster_overload_state') === 'true') {
+            document.getElementById('cluster-alert').style.display = 'block';
+            document.getElementById('docs-sidebar').style.paddingTop = '75px';
+            document.getElementById('docs-content').style.paddingTop = '105px';
+        }
+    </script>
 </body>
 </html>
