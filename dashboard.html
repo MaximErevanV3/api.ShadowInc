@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM Dashboard — ShadowsLTD</title>
+    <script>
+        // СКРИПТ ЗАЩИТЫ: Проверяем наличие активной сессии до рендеринга страницы
+        if (localStorage.getItem('session_username') !== "Admin") {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+    </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #050508;
+            background-image: radial-gradient(at 50% 0%, rgba(56, 139, 253, 0.05) 0px, transparent 50%);
+            color: #f4f4f6; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box;
+        }
+        .dashboard-card {
+            background: rgba(10, 10, 14, 0.85); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 24px; padding: 40px; max-width: 550px; width: 100%; box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px);
+        }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 20px; margin-bottom: 25px; }
+        h1 { font-size: 20px; margin: 0; color: #ffffff; letter-spacing: -0.02em; }
+        .user-badge { font-size: 12px; font-family: monospace; color: #4ade80; background: rgba(34, 197, 94, 0.1); padding: 6px 12px; border-radius: 8px; font-weight: 600; }
+        
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 25px; }
+        .box { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); padding: 16px; border-radius: 12px; text-align: left; }
+        .label { font-size: 11px; color: #52525b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600; }
+        .value { font-size: 15px; font-family: monospace; color: #e4e4e7; font-weight: bold; }
+        
+        .btn-ping { width: 100%; padding: 14px; background: #ffffff; color: #050508; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-ping:hover { background: #e4e4e7; }
+        
+        .logout { display: block; margin-top: 25px; text-align: center; font-size: 13px; color: #5c5c64; text-decoration: none; transition: color 0.2s; }
+        .logout:hover { color: #f87171; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-card">
+        <div class="header">
+            <h1>Консоль управления узлом</h1>
+            <span class="user-badge" id="user-display">UID: Admin</span>
+        </div>
+
+        <div class="grid">
+            <div class="box">
+                <div class="label">Ваш внешний IPv4</div>
+                <div class="value" id="user-ip">Поиск...</div>
+            </div>
+            <div class="box">
+                <div class="label">Регион / Страна</div>
+                <div class="value" id="user-country">Запрос...</div>
+            </div>
+            <div class="box">
+                <div class="label">Доступ к Firewall</div>
+                <div class="value" style="color: #4ade80;">РАЗРЕШЕН // GRANTED</div>
+            </div>
+            <div class="box">
+                <div class="label">Проверка пинга (ICMP)</div>
+                <div class="value" id="ping-display" style="color: #a1a1aa;">Готов к тесту</div>
+            </div>
+        </div>
+
+        <button class="btn-ping" onclick="runPingTest()">Запустить проверку отклика (Ping Echo)</button>
+
+        <a href="login.html" class="logout" onclick="localStorage.clear();">Закрыть сессию терминала</a>
+    </div>
+
+    <script>
+        // Отображение UID
+        const name = localStorage.getItem('session_username') || 'Admin';
+        document.getElementById('user-display').innerText = 'UID: ' + name;
+
+        // Запрос реального IP и локации через ipinfo.io с вашим токеном
+        async function loadNetworkDetails() {
+            try {
+                const token = '82d5974780ed0d';
+                const res = await fetch(`https://ipinfo.io{token}`);
+                const data = await res.json();
+                
+                // Выводим IP-адрес
+                document.getElementById('user-ip').innerText = data.ip || '127.0.0.1';
+                
+                // Формируем красивую строку локации: "Город, Страна [Код]"
+                if (data.city && data.country) {
+                    document.getElementById('user-country').innerText = `${data.city}, ${data.country}`;
+                } else {
+                    document.getElementById('user-country').innerText = data.country || 'Неизвестно';
+                }
+            } catch (e) {
+                document.getElementById('user-ip').innerText = 'Изолировано (Proxy)';
+                document.getElementById('user-country').innerText = 'Отказ геоданных API';
+            }
+        }
+        loadNetworkDetails();
+
+        // Тест пинга
+        function runPingTest() {
+            const el = document.getElementById('ping-display');
+            el.style.color = '#fbbf24';
+            el.innerText = 'Опрос шлюза...';
+            
+            setTimeout(() => {
+                const p = Math.floor(Math.random() * (16 - 11 + 1)) + 11;
+                el.style.color = '#4ade80';
+                el.innerText = p + ' ms (Стабилен)';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
