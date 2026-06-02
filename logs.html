@@ -32,11 +32,12 @@
             background: rgba(255,255,255,0.01); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 16px 20px; margin-bottom: 20px;
             display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #a1a1aa; font-family: sans-serif;
         }
-        .status-pill { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: #4ade80; background: rgba(34,197,94,0.06); padding: 4px 10px; border-radius: 100px; border: 1px solid rgba(34,197,94,0.15); }
+        .status-pill { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: #4ade80; background: rgba(34,197,94,0.06); padding: 4px 10px; border-radius: 100px; border: 1px solid rgba(34,197,94,0.15); transition: all 0.3s ease; }
         /* Терминальное окно */
         .log-terminal { 
             flex: 1; overflow: hidden; position: relative; font-size: 12px; line-height: 1.8; 
             background: #030305; border: 1px solid rgba(255,255,255,0.03); border-radius: 14px; padding: 20px; box-shadow: inset 0 20px 40px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column;
         }
         
         /* Поток бесконечно бегущих строк */
@@ -56,15 +57,21 @@
         .tag-crit { background: rgba(239,68,68,0.08); color: #f87171; border: 1px solid rgba(239,68,68,0.15); }
         
         .highlight { color: #f4f4f6; font-weight: 600; }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
     </style>
 </head>
 <body>
     <!-- ВЕРХНЕЕ УВЕДОМЛЕНИЕ О НАГРУЗКЕ -->
     <div id="cluster-alert" style="display: none; width: 100%; position: fixed; top: 0; left: 0; background: rgba(239, 68, 68, 0.1); border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding: 10px; font-size: 12px; color: #f87171; text-align: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-sizing: border-box; z-index: 9999;">
-        Зафиксирована критическая деградация пропускной способности магистральных шлюзов. Высокая утилизация пула очередей L3/L4. Возможны сетевые задержки.
+        [CRITICAL_NOTICE] Зафиксирована критическая деградация пропускной способности магистральных шлюзов. Высокая утилизация пула очередей L3/L4. Возможны сетевые задержки.
     </div>
 
-    <!-- Боковая панель -->
+    <!-- Улучшенная боковая панель -->
     <div class="sidebar" id="logs-sidebar">
         <div class="sidebar-menu">
             <div class="sidebar-brand">SHADOWSLTD CORE</div>
@@ -78,11 +85,11 @@
     <div class="log-viewer" id="logs-viewer">
         <div class="log-header">
             <div>CORE SYSTEM RUNTIME LOGS // <span style="font-family:monospace; color:#38bdf8;">NODE_ID: shadows-ams-01</span></div>
-            <div class="status-pill">● LIVE STREAM ACTIVE</div>
+            <div class="status-pill" id="console-status-pill">● LIVE STREAM ACTIVE</div>
         </div>
         
         <div class="log-terminal">
-            <div class="log-stream">
+            <div class="log-stream" id="console-log-stream">
                 <!-- Блок логов 1 -->
                 <div>
                     <div class="log-row"><span class="log-time">[20:14:01]</span><span class="tag tag-info">system</span> Инициализация виртуальной среды shadows-edge-runtime-core... [OK]</div>
@@ -101,15 +108,13 @@
                     <div class="log-row"><span class="log-time">[20:14:28]</span><span class="tag tag-success">security</span> Ротация эфемерных сессионных ключей на эллиптических кривых <span class="highlight">(ECDHE-X25519)</span>.</div>
                     <div class="log-row"><span class="log-time">[20:14:32]</span><span class="tag tag-debug">cluster</span> Синхронизация контрольной временной метки кластера <span class="highlight">X-Cluster-Epoch</span> выполнена.</div>
                 </div>
-
-                </div>
                 <!-- Дублирующий блок 2 для бесшовной цикличной прокрутки -->
                 <div>
                     <div class="log-row"><span class="log-time">[20:14:01]</span><span class="tag tag-info">system</span> Инициализация виртуальной среды shadows-edge-runtime-core... [OK]</div>
                     <div class="log-row"><span class="log-time">[20:14:01]</span><span class="tag tag-success">crypto</span> Аппаратное ускорение инструкций <span class="highlight">AES-NI / AVX-512</span> успешно подключено.</div>
                     <div class="log-row"><span class="log-time">[20:14:02]</span><span class="tag tag-debug">network</span> Считывание статической матрицы топологии путей eBPF. Загружено дескрипторов: <span class="highlight">8192</span></div>
                     <div class="log-row"><span class="log-time">[20:14:02]</span><span class="tag tag-info">network</span> Служебный сокет успешно биндирован на локальный интерфейс <span class="highlight">0.0.0.0:443 (UDP_ENCAP)</span></div>
-                    <div class="log-row"><span class="log-time">[20:14:03]</span><span class="tag tag-success">security</span> Контекст TLS-сессии инициализирован: шифр-пакет <span class="highlight">TLS_AES_256_GCM_SHA384</span> активен.</div>
+                    <div class="log-row"><span class="log-time">[20:14:03]</span><span class="tag tag-success">security</span> Box-сессия TLS инициализирована: шифр-пакет <span class="highlight">TLS_AES_256_GCM_SHA384</span> активен.</div>
                     <div class="log-row"><span class="log-time">[20:14:05]</span><span class="tag tag-debug">cluster</span> Опрос состояния Replica-Set пула баз данных. Задержка синхронизации: <span class="highlight">0.002s</span></div>
                     <div class="log-row"><span class="log-time">[20:14:07]</span><span class="tag tag-info">proxy</span> Успешный пиринговый обмен дескрипторами маршрутов с нодой <span class="highlight">shadows-vlc-02 [Valencia, ES]</span></div>
                     <div class="log-row"><span class="log-time">[20:14:10]</span><span class="tag tag-warn">warn</span> Зафиксирован аномальный инжект заголовков от <span class="highlight">185.22.14.92</span>. Сессия сброшена демоном.</div>
@@ -125,8 +130,50 @@
         </div>
     </div>
 
-    <!-- СКРИПТ СИНХРОНИЗАЦИИ И ЗАЩИТЫ -->
+    <!-- ИНТЕЛЛЕКТУАЛЬНЫЙ СКРИПТ УПРАВЛЕНИЯ ЛОГАМИ И ЗАЩИТЫ -->
     <script>
+        // ==========================================
+        // ГЛОБАЛЬНЫЙ БЛОК КОНФИГУРАЦИИ КОНСОЛИ
+        // true — заблокировать логи / false — включить бегущий поток
+        // ==========================================
+        const DISABLE_LOG_STREAM = true; 
+        // ==========================================
+
+        function initLogConsole() {
+            const stream = document.getElementById('console-log-stream');
+            const terminal = document.querySelector('.log-terminal');
+            const statusPill = document.getElementById('console-status-pill');
+
+            if (DISABLE_LOG_STREAM) {
+                if (stream) stream.style.display = 'none';
+
+                if (statusPill) {
+                    statusPill.innerText = '● LIVE STREAM DISABLED';
+                    statusPill.style.color = '#f87171';
+                    statusPill.style.background = 'rgba(239, 68, 68, 0.06)';
+                    statusPill.style.borderColor = 'rgba(239, 68, 68, 0.15)';
+                }
+
+                const errorBox = document.createElement('div');
+                errorBox.style.color = '#ef4444';
+                errorBox.style.fontFamily = 'monospace';
+                errorBox.style.textAlign = 'center';
+                errorBox.style.margin = 'auto';
+                errorBox.style.lineHeight = '1.8';
+                errorBox.innerHTML = `
+                    <div style="font-size: 56px; font-weight: bold; margin-bottom: 20px; color: #ef4444; animation: pulse 2s infinite ease-in-out;">⚠️</div>
+                    <div style="font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 15px; color: #f87171;">[ ДОСТУП ОГРАНИЧЕН // LOG STREAM DISABLED ]</div>
+                    <div style="max-width: 480px; margin: 0 auto; color: #a1a1aa; font-size: 13px; line-height: 1.6; text-transform: none;">
+                        CORE::REASON -> Поток системных логов принудительно заблокирован главным планировщиком ядра ShadowsLTD.<br><br>
+                        Магистральный конвейер сбора метрик переведен в изолированный автономный режим. Внешний мониторинг runtime-активности нод временно недоступен.
+                    </div>
+                `;
+                if (terminal) terminal.appendChild(errorBox);
+            }
+        }
+
+        initLogConsole();
+
         setInterval(function () {
             debugger;
         }, 100);
@@ -151,32 +198,4 @@
 </body>
 </html>
 
-        <!-- ОБНОВЛЕННЫЙ СКРИПТ ЛОГОВ С ИНТЕГРИРОВАННОЙ ЗАЩИТОЙ -->
-    <script>
-        // Анти-отладчик (зависание консоли)
-        setInterval(function () {
-            debugger;
-        }, 100);
-
-        // Блокировка мыши и клавиш
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12') { e.preventDefault(); return false; }
-            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) { e.preventDefault(); return false; }
-            if (e.ctrlKey && e.key === 'u') { e.preventDefault(); return false; }
-            if (e.ctrlKey && e.key === 's') { e.preventDefault(); return false; }
-        });
-
-        // Проверка статуса аварии (старый рабочий код)
-        if (localStorage.getItem('cluster_overload_state') === 'true') {
-            document.getElementById('cluster-alert').style.display = 'block';
-            document.getElementById('logs-sidebar').style.paddingTop = '75px';
-            document.getElementById('logs-viewer').style.paddingTop = '75px';
-        }
-    </script>
-</body>
-</html>
 
