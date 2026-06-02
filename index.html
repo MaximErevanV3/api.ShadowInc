@@ -136,5 +136,149 @@
         }
     </script>
 </body>
+<body>
+    <!-- 1. ВЕРХНЕЕ УВЕДОМЛЕНИЕ О НАГРУЗКЕ -->
+    <div id="cluster-alert" style="display: none; width: 100%; position: fixed; top: 0; left: 0; background: rgba(239, 68, 68, 0.1); border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding: 10px; font-size: 12px; color: #f87171; text-align: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-sizing: border-box; z-index: 9999; animation: fadeIn 0.4s ease;">
+        [CRITICAL_NOTICE] Зафиксирована критическая деградация пропускной способности магистральных шлюзов. Высокая утилизация пула очередей L3/L4. Возможны сетевые задержки.
+    </div>
+
+    <div class="main-card">
+        <div class="badge-container">
+            <!-- ДИНАМИЧЕСКИЙ БЕЙДЖ СТАТУСА -->
+            <div class="badge" id="system-status-badge">
+                <span class="pulse-dot" id="status-dot"></span>
+                <span id="status-text">ONLINE</span>
+            </div>
+            <div class="badge badge-version">v0.1.1 (BETA)</div>
+        </div>
+
+        <h1>ShadowsLTD API</h1>
+        <p class="subtitle">Свободная инфраструктурная платформа для изолированной маршрутизации данных и распределенного обмена пакетами.</p>
+
+        <div class="metrics-bar">
+            <div class="metric-item">
+                <div class="metric-label">Node latency</div>
+                <div class="ticker-window">
+                    <div class="ticker-stack ping-ticker"><span>14 ms</span><span>12 ms</span><span>16 ms</span><span>11 ms</span><span>15 ms</span><span>13 ms</span></div>
+                </div>
+            </div>
+            <div class="metric-item" style="text-align: right;">
+                <div class="metric-label">Active Edges</div>
+                <div class="ticker-window" style="text-align: right;">
+                    <div class="ticker-stack uptime-ticker" style="color: #4ade80;">
+                        <span>421 nodes</span>
+                        <span>419 nodes</span>
+                        <span>424 nodes</span>
+                        <span>422 nodes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="download-title" style="text-align: left; margin-bottom: 6px;">Быстрая установка (CLI)</div>
+        <div class="install-box">
+            <div class="install-code" id="cli-text">curl -sSL https://mooo.com | bash</div>
+            <button class="install-btn" onclick="copyCLI()">Copy</button>
+        </div>
+
+        <div class="download-box">
+            <div class="download-title">Исполняемые файлы ядра (Core Binaries)</div>
+            <div class="os-tabs">
+                <button class="os-tab-btn active" id="os-win" onclick="switchOS('win')">Windows x64</button>
+                <button class="os-tab-btn" id="os-linux" onclick="switchOS('linux')">Linux amd64</button>
+            </div>
+            <button class="btn-disabled" onclick="showBuildAlert()">Скачать стабильный релиз (v0.1.1)</button>
+            <div id="build-alert" class="alert-toast">Сборка v0.1.1-BETA находится в процессе закрытой компиляции ядра. Загрузка репозитория временно ограничена.</div>
+        </div>
+
+        <div class="tech-info-block">
+            <div class="tech-title">Спецификация архитектуры</div>
+            <p class="tech-text">Распределенная инфраструктура ShadowsLTD функционирует без централизованного сервера авторизации. Балансировка сессий распределяется динамическими инспекторами трафика Tier-4.</p>
+        </div>
+
+        <div class="btn-stack">
+            <a href="docs.html" class="btn-action btn-white">Открыть спецификацию Core API</a>
+            <a href="about.html" class="btn-action btn-outline">О компании</a>
+        </div>
+
+        <div class="social-row">
+            <a href="https://x.com" target="_blank" class="social-link">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-bottom:-1px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                Следить в X (Twitter)
+            </a>
+        </div>
+
+        <div class="footer">&copy; 2026 ShadowsLTD Project. Лицензия MIT.</div>
+    </div>
+
+    <!-- ИНТЕЛЛЕКТУАЛЬНЫЙ СКРИПТ УПРАВЛЕНИЯ -->
+    <script>
+        // ==========================================
+        // ГЛОБАЛЬНЫЙ БЛОК КОНФИГУРАЦИИ КЛАСТЕРА
+        // Переключайте значение ниже: true (нагрузка) / false (норма)
+        // ==========================================
+        const INFRASTRUCTURE_OVERLOAD = true; 
+        // ==========================================
+
+        // Функция инициализации состояний сайта на основе конфигурации
+        function initClusterStatus() {
+            const alertTop = document.getElementById('cluster-alert');
+            const badge = document.getElementById('system-status-badge');
+            const dot = document.getElementById('status-dot');
+            const txt = document.getElementById('status-text');
+
+            if (INFRASTRUCTURE_OVERLOAD) {
+                // Если включена сильная нагрузка
+                alertTop.style.display = 'block';
+                document.body.style.paddingTop = '60px'; // Сдвигаем контент вниз под плашку
+                
+                // Переключаем стили бейджа на критические
+                badge.style.background = 'rgba(239, 68, 68, 0.08)';
+                badge.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+                badge.style.color = '#f87171';
+                dot.style.backgroundColor = '#ef4444';
+                txt.innerText = 'DEGRADED';
+                
+                // Ускоряем анимацию пульсации точки, показывая нестабильность
+                dot.style.setProperty('--pulse-speed', '0.8s');
+            } else {
+                // Если всё функционирует штатно
+                alertTop.style.display = 'none';
+                document.body.style.paddingTop = '20px';
+                
+                badge.style.background = 'rgba(34, 197, 94, 0.06)';
+                badge.style.borderColor = 'rgba(34, 197, 94, 0.15)';
+                badge.style.color = '#4ade80';
+                dot.style.backgroundColor = '#22c55e';
+                txt.innerText = 'ONLINE';
+            }
+        }
+
+        // Запуск проверки конфигурации при загрузке
+        initClusterStatus();
+
+        function showBuildAlert() {
+            const alertBox = document.getElementById('build-alert');
+            alertBox.style.display = 'block';
+            setTimeout(() => { alertBox.style.display = 'none'; }, 5000);
+        }
+
+        function switchOS(os) {
+            document.getElementById('os-win').classList.remove('active');
+            document.getElementById('os-linux').classList.remove('active');
+            if(os === 'win') { document.getElementById('os-win').classList.add('active'); }
+            else { document.getElementById('os-linux').classList.add('active'); }
+        }
+
+        function copyCLI() {
+            const text = document.getElementById('cli-text').innerText;
+            navigator.clipboard.writeText(text);
+            const btn = document.querySelector('.install-btn');
+            btn.innerText = 'Copied!';
+            setTimeout(() => { btn.innerText = 'Copy'; }, 2000);
+        }
+    </script>
+</body>
 </html>
+
 
