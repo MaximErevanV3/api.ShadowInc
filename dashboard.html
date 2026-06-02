@@ -48,11 +48,11 @@
         <div class="grid">
             <div class="box">
                 <div class="label">Ваш внешний IPv4</div>
-                <div class="value" id="user-ip">Определяется...</div>
+                <div class="value" id="user-ip">Загрузка сети...</div>
             </div>
             <div class="box">
                 <div class="label">Регион / Страна</div>
-                <div class="value" id="user-country">Запрос геоданных...</div>
+                <div class="value" id="user-country">Синхронизация геоданных...</div>
             </div>
             <div class="box">
                 <div class="label">Доступ к Firewall</div>
@@ -70,39 +70,31 @@
     </div>
 
     <script>
-        // Установка UID администратора из сессии
+        // Установка UID администратора из локальной сессии браузера
         const name = localStorage.getItem('session_username') || 'Admin';
         document.getElementById('user-display').innerText = 'UID: ' + name;
 
-        // Функция обработки вашего кастомного JSON формата
-        async function loadNetworkDetails() {
-            try {
-                // Делаем запрос к вашему API ipinfo
-                const token = '82d5974780ed0d';
-                const response = await fetch(`https://ipinfo.io{token}`);
-                const data = await response.json();
-                
-                // Чтение данных строго по вашему формату
+        // ЭТА КОМАНДА ВЫЗЫВАЕТСЯ АВТОМАТИЧЕСКИ ПРИ ЗАГРУЗКЕ СКРИПТА СНИЗУ
+        function ipinfoCallback(data) {
+            if (data) {
+                // Извлекаем IP строго по вашему JSON формату
                 document.getElementById('user-ip').innerText = data.ip || '127.0.0.1';
                 
+                // Выводим Страну и Код страны по вашему формату
                 if (data.country && data.country_code) {
                     document.getElementById('user-country').innerText = `${data.country} [${data.country_code}]`;
                 } else if (data.country) {
                     document.getElementById('user-country').innerText = data.country;
                 } else {
-                    document.getElementById('user-country').innerText = 'Локальная сеть';
+                    document.getElementById('user-country').innerText = 'Локальный узел';
                 }
-            } catch (error) {
-                // Если API блокируется или падает — выводим маскировочные данные
-                document.getElementById('user-ip').innerText = 'Изолировано (Proxy)';
-                document.getElementById('user-country').innerText = 'Отказ геоданных API';
+            } else {
+                document.getElementById('user-ip').innerText = 'Ошибка шлюза API';
+                document.getElementById('user-country').innerText = 'Отказ декодирования';
             }
         }
-        
-        // Запуск парсинга при открытии страницы
-        loadNetworkDetails();
 
-        // Живой тест отклика до вашего шлюза
+        // Логика теста пинга
         function runPingTest() {
             const el = document.getElementById('ping-display');
             el.style.color = '#fbbf24';
@@ -115,6 +107,10 @@
             }, 1000);
         }
     </script>
+
+    <!-- БЕЗОПАСНЫЙ КАНАЛ JSONP С ВАШИМ ТОКЕНОМ, ИГНОРИРУЮЩИЙ CORS В БРАУЗЕРЕ -->
+    <script src="https://ipinfo.io"></script>
+
 </body>
 </html>
 
