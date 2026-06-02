@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM Console — ShadowsLTD</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #050508;
+            background-image: 
+                radial-gradient(at 50% 0%, rgba(34, 197, 94, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(24, 24, 37, 0.6) 0px, transparent 50%);
+            color: #f4f4f6; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box;
+        }
+        
+        .auth-card {
+            background: rgba(10, 10, 14, 0.85); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 24px; padding: 40px; max-width: 420px; width: 100%; margin: 20px; box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px); text-align: center;
+        }
+
+        .back-link { font-size: 13px; color: #5c5c64; text-decoration: none; display: inline-block; margin-bottom: 25px; transition: color 0.2s; }
+        .back-link:hover { color: #ffffff; }
+
+        /* Переключатель Вход / Регистрация */
+        .tab-container {
+            display: flex; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); padding: 4px; border-radius: 12px; margin-bottom: 30px;
+        }
+        .tab-btn {
+            flex: 1; padding: 10px; background: transparent; border: none; color: #8c8c94; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.2s ease;
+        }
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.06); color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        /* Формы */
+        .form-block { display: none; }
+        .form-block.active { display: block; }
+        
+        h1 { font-size: 24px; font-weight: 700; color: #ffffff; margin: 0 0 8px 0; letter-spacing: -0.02em; text-align: left; }
+        .desc { font-size: 13px; color: #6e6d7a; line-height: 1.5; margin-bottom: 25px; text-align: left; }
+
+        .form-group { margin-bottom: 18px; text-align: left; }
+        .form-label { display: block; font-size: 11px; color: #52525b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600; }
+        .form-input {
+            width: 100%; padding: 12px 16px; background: #010103; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; color: #ffffff; font-size: 14px; font-family: monospace; box-sizing: border-box; transition: all 0.2s ease;
+        }
+        .form-input:focus { border-color: #4ade80; outline: none; background: #050508; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1); }
+        
+        .btn-submit {
+            width: 100%; padding: 14px; background: #ffffff; color: #050508; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: background 0.2s ease, transform 0.1s;
+        }
+        .btn-submit:hover { background: #e4e4e7; }
+        .btn-submit:active { transform: scale(0.99); }
+
+        /* Ошибки и уведомления */
+        .notification {
+            display: none; padding: 14px; border-radius: 10px; font-size: 13px; line-height: 1.5; margin-top: 15px; text-align: left;
+        }
+        .error-style {
+            background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #f87171;
+        }
+        .success-style {
+            background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); color: #4ade80;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-card">
+        <div style="text-align: left;">
+            <a href="index.html" class="back-link">← На главную консоль</a>
+        </div>
+        
+        <!-- Навигационные вкладки -->
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="switchTab('login')">Вход в систему</button>
+            <button class="tab-btn" onclick="switchTab('register')">Регистрация узла</button>
+        </div>
+
+        <!-- ФОРМА 1: АВТОРИЗАЦИЯ -->
+        <div id="login-block" class="form-block active">
+            <h1>IAM Авторизация</h1>
+            <p class="desc">Доступ к терминалу управления инфраструктурой ShadowsLTD.</p>
+            
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Идентификатор оператора (UID)</label>
+                    <input type="text" class="form-input" placeholder="admin-xxxx" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Криптографический ключ доступа</label>
+                    <input type="password" class="form-input" placeholder="••••••••••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit">Выполнить Handshake</button>
+            </form>
+            <div id="login-notification" class="notification error-style"></div>
+        </div>
+
+        <!-- ФОРМА 2: РЕГИСТРАЦИЯ -->
+        <div id="register-block" class="form-block">
+            <h1>Запрос доступа к узлу</h1>
+            <p class="desc">Подайте заявку на генерацию токена безопасности для интеграции вашего оборудования.</p>
+            
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label class="form-label">Идентификатор узла (Node ID)</label>
+                    <input type="text" class="form-input" placeholder="node-xxxx-xxxx" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Рабочий Email инженера</label>
+                    <input type="email" class="form-input" placeholder="username@://mooo.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Мастер-ключ верификации</label>
+                    <input type="password" class="form-input" placeholder="••••••••••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit">Отправить запрос модераторам</button>
+            </form>
+            <div id="register-notification" class="notification success-style"></div>
+        </div>
+
+    </div>
+
+    <!-- Логика работы интерфейса -->
+    <script>
+        // Переключение между вкладками Вход / Регистрация
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const blocks = document.querySelectorAll('.form-block');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            blocks.forEach(b => b.classList.remove('active'));
+            
+            // Прячем старые уведомления при переключении
+            document.getElementById('login-notification').style.display = 'none';
+            document.getElementById('register-notification').style.display = 'none';
+
+            if (tab === 'login') {
+                tabs[0].classList.add('active');
+                document.getElementById('login-block').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('register-block').classList.add('active');
+            }
+        }
+
+        // Имитация ошибки входа (для маскировки)
+        function handleLogin(event) {
+            event.preventDefault();
+            const notify = document.getElementById('login-notification');
+            notify.style.display = 'block';
+            notify.innerText = "Ошибка безопасности: Попытка неавторизованного доступа. Данные сессии и ваш IP-адрес перенаправлены в журнал логирования сетевой активности кластера.";
+        }
+
+        // Имитация успешной отправки заявки
+        function handleRegister(event) {
+            event.preventDefault();
+            const notify = document.getElementById('register-notification');
+            notify.style.display = 'block';
+            notify.innerHTML = "<b>Запрос успешно поставлен в очередь.</b><br>Сигнатуры оборудования приняты. Процесс ручной модерации и генерации постоянного SSL-сертификата занимает до 24 часов.";
+        }
+    </script>
+
+</body>
+</html>
