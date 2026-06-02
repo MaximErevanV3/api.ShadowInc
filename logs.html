@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Консоль логов кластера — ShadowsLTD</title>
+    <style>
+        body {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            background-color: #020204; color: #4af626; margin: 0; padding: 0; display: flex; height: 100vh; overflow: hidden;
+        }
+        .sidebar {
+            width: 280px; background: #08080c; border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 20px; box-sizing: border-box; color: #acacb6;
+        }
+        .sidebar-brand { font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 30px; font-family: sans-serif; }
+        .sidebar-link { display: block; font-size: 14px; color: #8c8c94; text-decoration: none; padding: 6px 0; font-family: sans-serif; }
+        .sidebar-link:hover { color: #ffffff; }
+
+        .log-viewer {
+            flex: 1; padding: 40px; box-sizing: border-box; position: relative; background: #010102; display: flex; flex-direction: column;
+        }
+        .log-header {
+            border-bottom: 1px solid rgba(74, 246, 38, 0.15); padding-bottom: 15px; margin-bottom: 15px; font-size: 14px; color: #ffffff;
+            display: flex; justify-content: space-between;
+        }
+        
+        /* Контейнер бесконечно бегущих строк */
+        .log-terminal {
+            flex: 1; overflow: hidden; position: relative; font-size: 12px; line-height: 1.8;
+        }
+        .log-stream {
+            display: flex; flex-direction: column; position: absolute; left: 0; width: 100%;
+            animation: streamLogs 45s linear infinite;
+        }
+
+        @keyframes streamLogs {
+            0% { top: 0; }
+            100% { transform: translateY(-50%); }
+        }
+
+        .tag-info { color: #38bdf8; }
+        .tag-warn { color: #fbbf24; }
+        .tag-success { color: #4ade80; }
+        .tag-debug { color: #a7a7b0; }
+    </style>
+</head>
+<body>
+
+    <!-- Меню слева (такое же, для целостности сайта) -->
+    <div class="sidebar">
+        <div class="sidebar-brand">SHADOWSLTD CORE</div>
+        <a href="index.html" class="sidebar-link">← Главная консоль</a>
+        <a href="docs.html" class="sidebar-link">← Спецификация API</a>
+    </div>
+
+    <!-- Область вывода бегущих логов -->
+    <div class="log-viewer">
+        <div class="log-header">
+            <div>CLUSTER NODE MONITOR // stream_active: true</div>
+            <div style="color: #4af626;">● CONSOLE SYNCED</div>
+        </div>
+
+        <div class="log-terminal">
+            <div class="log-stream">
+                <!-- Блок логов (Повторяется дважды, чтобы анимация была бесшовной) -->
+                <div>
+                    <div>[2026-06-02 14:21:03] <span class="tag-info">[INFO]</span> Инициализация дочернего процесса ядра shadows-edge-worker-1...</div>
+                    <div>[2026-06-02 14:21:03] <span class="tag-success">[SUCCESS]</span> Привязка сокета к интерфейсу 0.0.0.0:443 выполнена успешно.</div>
+                    <div>[2026-06-02 14:21:05] <span class="tag-debug">[DEBUG]</span> Загрузка статических таблиц маршрутизации eBPF фильтра. Записей: 4192</div>
+                    <div>[2026-06-02 14:21:08] <span class="tag-info">[INFO]</span> Проверка пула соединений прокси-базы: активных линков [12], свободных [48]</div>
+                    <div>[2026-06-02 14:21:12] <span class="tag-warn">[WARN]</span> Зафиксирован аномальный TLS handshake от 194.22.102.5. Сброс сессии по таймауту.</div>
+                    <div>[2026-06-02 14:21:15] <span class="tag-success">[SUCCESS]</span> Успешный обмен эфемерными ключами Диффи-Хеллмана с Node-VPC-3</div>
+                    <div>[2026-06-02 14:21:20] <span class="tag-info">[INFO]</span> Текущая утилизация ресурсов кластера: CPU: 3.4%, RAM: 18.1%, Network: 420kb/s</div>
+                    <div>[2026-06-02 14:21:24] <span class="tag-debug">[DEBUG]</span> Очистка кэша неактивных авторизационных сессий. Удалено записей: 14</div>
+                    <div>[2026-06-02 14:21:30] <span class="tag-info">[INFO]</span> Проверка согласованности Replica-Set. Статус: В СИНХРОНИЗАЦИИ</div>
+                    <div>[2026-06-02 14:21:35] <span class="tag-success">[SUCCESS]</span> Пакетный инжект метрик Uptime отправлен на главный контроллер балансировщика.</div>
+                    <div>[2026-06-02 14:21:41] <span class="tag-info">[INFO]</span> Маршрутизация пакетов: Поток стабилен, деградации каналов не обнаружено.</div>
+                </div>
+                <!-- Дублирующий блок для бесшовного зацикливания -->
+                <div>
+                    <div>[2026-06-02 14:21:03] <span class="tag-info">[INFO]</span> Инициализация дочернего процесса ядра shadows-edge-worker-1...</div>
+                    <div>[2026-06-02 14:21:03] <span class="tag-success">[SUCCESS]</span> Привязка сокета к интерфейсу 0.0.0.0:443 выполнена успешно.</div>
+                    <div>[2026-06-02 14:21:05] <span class="tag-debug">[DEBUG]</span> Загрузка статических таблиц маршрутизации eBPF фильтра. Записей: 4192</div>
+                    <div>[2026-06-02 14:21:08] <span class="tag-info">[INFO]</span> Проверка пула соединений прокси-базы: активных линков [12], свободных [48]</div>
+                    <div>[2026-06-02 14:21:12] <span class="tag-warn">[WARN]</span> Зафиксирован аномальный TLS handshake от 194.22.102.5. Сброс сессии по таймауту.</div>
+                    <div>[2026-06-02 14:21:15] <span class="tag-success">[SUCCESS]</span> Успешный обмен эфемерными ключами Диффи-Хеллмана с Node-VPC-3</div>
+                    <div>[2026-06-02 14:21:20] <span class="tag-info">[INFO]</span> Текущая утилизация ресурсов кластера: CPU: 3.4%, RAM: 18.1%, Network: 420kb/s</div>
+                    <div>[2026-06-02 14:21:24] <span class="tag-debug">[DEBUG]</span> Очистка кэша неактивных авторизационных сессий. Удалено записей: 14</div>
+                    <div>[2026-06-02 14:21:30] <span class="tag-info">[INFO]</span> Проверка согласованности Replica-Set. Статус: В СИНХРОНИЗАЦИИ</div>
+                    <div>[2026-06-02 14:21:35] <span class="tag-success">[SUCCESS]</span> Пакетный инжект метрик Uptime отправлен на главный контроллер балансировщика.</div>
+                    <div>[2026-06-02 14:21:41] <span class="tag-info">[INFO]</span> Маршрутизация пакетов: Поток стабилен, деградации каналов не обнаружено.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
