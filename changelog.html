@@ -46,4 +46,54 @@
         .footer { font-size: 11px; color: #3f3f46; border-top: 1px solid rgba(255, 255, 255, 0.03); padding-top: 20px; margin-top: 40px; text-align: center; }
     </style>
 </head>
+<body>
+    <!-- ВЕРХНЕЕ УВЕДОМЛЕНИЕ О НАГРУЗКЕ -->
+    <div id="cluster-alert" style="display: none; width: 100%; position: fixed; top: 0; left: 0; background: rgba(239, 68, 68, 0.1); border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding: 10px; font-size: 12px; color: #f87171; text-align: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-sizing: border-box; z-index: 9999;">
+        Зафиксирована критическая деградация пропускной способности магистральных шлюзов. Высокая утилизация пула очередей L3/L4. Возможны сетевые задержки.
+    </div>
+
+    <div class="changelog-card">
+        <a href="index.html" class="back-link">← Вернуться на главную</a>
+        
+        <h1>История изменений</h1>
+        <p class="subtitle">Официальный лог обновлений и оптимизации модулей платформы ShadowsLTD.</p>
+        
+        <!-- ТЕКУЩАЯ ВЕРСИЯ В РАЗРАБОТКЕ -->
+        <div class="version-block latest">
+            <div class="version-header">
+                <span class="version-title">v0.1.1-BETA</span>
+                <span class="version-badge badge-blue">В разработке</span>
+            </div>
+            <ul class="change-list">
+                <li class="change-item add">Интеграция новой гибридной mesh-топологии для динамической перестройки пиринговых маршрутов нод.</li>
+                <li class="change-item add">Развертывание интеллектуального триггера автоматического перехода кластера в аварийный режим (Failover State).</li>
+                <li class="change-item fix">Исправление критической утечки дескрипторов сокетов при ротации эфемерных ключей Диффи-Хеллмана.</li>
+            </ul>
+        </div>
+
+        <!-- АРХИВНАЯ ВЕРСИЯ -->
+        <div class="version-block">
+            <div class="version-header">
+                <span class="version-title">v0.1.0-ALPHA</span>
+                <span class="version-badge badge-gray">02.03.2026</span>
+            </div>
+            <ul class="change-list">
+                <li class="change-item add">Первичный релиз базовой архитектуры ShadowsLTD Core API.</li>
+                <li class="change-item add">Подключение алгоритма контроля заторов BBRv3 и инкапсуляции сетевых пакетов верхнего уровня.</li>
+                <li class="change-item add">Реализация пре-авторизации handshake-запросов в рамках нулевого транспортного слоя (L0).</li>
+            </ul>
+        </div>
+
+        <div class="footer">&copy; 2026 ShadowsLTD Project. Лицензия MIT.</div>
+    </div>
+
+    <!-- АВТОМАТИЧЕСКИЙ ТУМБЛЕР СИНХРОНИЗАЦИИ АВАРИИ -->
+    <script>
+        if (localStorage.getItem('cluster_overload_state') === 'true') {
+            document.getElementById('cluster-alert').style.display = 'block';
+            document.body.style.paddingTop = '80px';
+        }
+    </script>
+</body>
+</html>
 
