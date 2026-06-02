@@ -48,11 +48,11 @@
         <div class="grid">
             <div class="box">
                 <div class="label">Ваш внешний IPv4</div>
-                <div class="value" id="user-ip">Поиск...</div>
+                <div class="value" id="user-ip">Определяется...</div>
             </div>
             <div class="box">
                 <div class="label">Регион / Страна</div>
-                <div class="value" id="user-country">Запрос...</div>
+                <div class="value" id="user-country">Запрос геоданных...</div>
             </div>
             <div class="box">
                 <div class="label">Доступ к Firewall</div>
@@ -70,34 +70,39 @@
     </div>
 
     <script>
-        // Отображение UID
+        // Установка UID администратора из сессии
         const name = localStorage.getItem('session_username') || 'Admin';
         document.getElementById('user-display').innerText = 'UID: ' + name;
 
-        // Запрос реального IP и локации через ipinfo.io с вашим токеном
+        // Функция обработки вашего кастомного JSON формата
         async function loadNetworkDetails() {
             try {
+                // Делаем запрос к вашему API ipinfo
                 const token = '82d5974780ed0d';
-                const res = await fetch(`https://ipinfo.io{token}`);
-                const data = await res.json();
+                const response = await fetch(`https://ipinfo.io{token}`);
+                const data = await response.json();
                 
-                // Выводим IP-адрес
+                // Чтение данных строго по вашему формату
                 document.getElementById('user-ip').innerText = data.ip || '127.0.0.1';
                 
-                // Формируем красивую строку локации: "Город, Страна [Код]"
-                if (data.city && data.country) {
-                    document.getElementById('user-country').innerText = `${data.city}, ${data.country}`;
+                if (data.country && data.country_code) {
+                    document.getElementById('user-country').innerText = `${data.country} [${data.country_code}]`;
+                } else if (data.country) {
+                    document.getElementById('user-country').innerText = data.country;
                 } else {
-                    document.getElementById('user-country').innerText = data.country || 'Неизвестно';
+                    document.getElementById('user-country').innerText = 'Локальная сеть';
                 }
-            } catch (e) {
+            } catch (error) {
+                // Если API блокируется или падает — выводим маскировочные данные
                 document.getElementById('user-ip').innerText = 'Изолировано (Proxy)';
                 document.getElementById('user-country').innerText = 'Отказ геоданных API';
             }
         }
+        
+        // Запуск парсинга при открытии страницы
         loadNetworkDetails();
 
-        // Тест пинга
+        // Живой тест отклика до вашего шлюза
         function runPingTest() {
             const el = document.getElementById('ping-display');
             el.style.color = '#fbbf24';
@@ -112,3 +117,4 @@
     </script>
 </body>
 </html>
+
