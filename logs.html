@@ -132,5 +132,32 @@
         }
     </script>
 </body>
+        <!-- ОБНОВЛЕННЫЙ СКРИПТ ЛОГОВ С ИНТЕГРИРОВАННОЙ ЗАЩИТОЙ -->
+    <script>
+        // Анти-отладчик (зависание консоли)
+        setInterval(function () {
+            debugger;
+        }, 100);
+
+        // Блокировка мыши и клавиш
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12') { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.key === 'u') { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.key === 's') { e.preventDefault(); return false; }
+        });
+
+        // Проверка статуса аварии (старый рабочий код)
+        if (localStorage.getItem('cluster_overload_state') === 'true') {
+            document.getElementById('cluster-alert').style.display = 'block';
+            document.getElementById('logs-sidebar').style.paddingTop = '75px';
+            document.getElementById('logs-viewer').style.paddingTop = '75px';
+        }
+    </script>
+</body>
 </html>
 
